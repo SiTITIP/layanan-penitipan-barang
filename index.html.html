@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistem Layanan Penitipan Barang</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 text-gray-800 font-sans min-h-screen p-6">
+
+    <div class="max-w-6xl mx-auto">
+        <div class="flex flex-col md:flex-row justify-between items-center bg-blue-800 text-white p-6 rounded-t-lg shadow-md">
+            <div>
+                <h1 class="text-2xl font-bold uppercase tracking-wide">Formulir Penitipan Barang</h1>
+                <p class="text-sm text-blue-200 mt-1">Layanan Pencatatan dan Validasi Titipan</p>
+            </div>
+            <div class="mt-4 md:mt-0 text-right bg-blue-900 px-4 py-2 rounded-md border border-blue-700">
+                <p class="text-xs text-blue-300">Waktu Saat Ini</p>
+                <p id="clock" class="text-xl font-mono font-semibold tracking-widest">00:00:00</p>
+                <p id="date" class="text-sm font-semibold"></p>
+            </div>
+        </div>
+
+        <div class="bg-white p-8 rounded-b-lg shadow-md mb-8">
+            <form id="formPenitipan" class="space-y-6">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="space-y-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Nama Penitip *</label>
+                            <input type="text" name="nama" required class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500 outline-none transition" placeholder="Contoh: Budi Santoso">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">No. Identitas (KTP/SIM) *</label>
+                            <input type="number" name="identitas" required class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500 outline-none transition" placeholder="Masukkan 16 digit NIK">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Alamat Penitip *</label>
+                            <textarea name="alamat" rows="3" required class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500 outline-none transition" placeholder="Alamat lengkap penitip"></textarea>
+                        </div>
+                    </div>
+
+                    <div class="space-y-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Jenis Titipan *</label>
+                            <input type="text" name="jenis" required class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500 outline-none transition" placeholder="Contoh: Pakaian, Makanan (Roti), Dokumen">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Tujuan Titipan *</label>
+                            <input type="text" name="tujuan" required class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500 outline-none transition" placeholder="Diberikan kepada siapa">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Keterangan *</label>
+                            <textarea name="keterangan" rows="3" required class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500 outline-none transition" placeholder="Catatan tambahan kondisi barang, jumlah barang dll"></textarea>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="statusMessage" class="hidden p-4 rounded-md text-sm font-medium"></div>
+
+                <div class="flex justify-end pt-4 border-t border-gray-200">
+                    <button type="submit" id="btnSubmit" class="bg-blue-700 hover:bg-blue-800 text-white font-bold py-2 px-6 rounded-md shadow-sm transition flex items-center gap-2">
+                        <span>Simpan Data</span>
+                        <svg id="spinner" class="animate-spin hidden h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                        </svg>
+                    </button>
+                </div>
+            </form>
+        </div>
+
+        <div class="bg-white p-6 rounded-lg shadow-md overflow-x-auto">
+            <h2 class="text-xl font-bold text-gray-800 border-b pb-3 mb-4">Riwayat Input Terbaru</h2>
+            <table class="min-w-full text-left text-sm whitespace-nowrap">
+                <thead class="bg-gray-100 uppercase text-gray-600">
+                    <tr>
+                        <th class="px-4 py-3 border-b">Waktu Input</th>
+                        <th class="px-4 py-3 border-b">Nama Penitip</th>
+                        <th class="px-4 py-3 border-b">No. Identitas</th>
+                        <th class="px-4 py-3 border-b">Jenis Barang</th>
+                        <th class="px-4 py-3 border-b">Tujuan</th>
+                    </tr>
+                </thead>
+                <tbody id="dataTableBody" class="divide-y divide-gray-200">
+                    <tr id="emptyRow">
+                        <td colspan="5" class="px-4 py-8 text-center text-gray-400 italic">Belum ada data yang diinput pada sesi ini.</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script>
+        // --- 1. SCRIPT JAM REAL TIME ---
+        function updateClock() {
+            const now = new Date();
+            
+            // Format Jam (HH:MM:SS)
+            const hours = String(now.getHours()).padStart(2, '0');
+            const minutes = String(now.getMinutes()).padStart(2, '0');
+            const seconds = String(now.getSeconds()).padStart(2, '0');
+            document.getElementById('clock').textContent = `${hours}:${minutes}:${seconds}`;
+
+            // Format Tanggal (DD Bulan YYYY)
+            const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+            document.getElementById('date').textContent = now.toLocaleDateString('id-ID', options);
+        }
+        setInterval(updateClock, 1000);
+        updateClock(); // Panggil sekali agar tidak delay 1 detik
+
+        // --- 2. SCRIPT SUBMIT FORM & INTEGRASI GOOGLE SHEETS ---
+        // GANTI URL DI BAWAH INI DENGAN URL WEB APP GOOGLE SCRIPT ANDA
+        const scriptURL = 'https://script.google.com/macros/s/AKfycbxzJUEV2DRuQRUmajp-VORE7rwN3rKTVlT_E7RalCw01SXxME3FVMhUDgnJkQUXEeGpug/exec'; 
+        
+        const form = document.getElementById('formPenitipan');
+        const btnSubmit = document.getElementById('btnSubmit');
+        const spinner = document.getElementById('spinner');
+        const statusMessage = document.getElementById('statusMessage');
+        const tableBody = document.getElementById('dataTableBody');
+        const emptyRow = document.getElementById('emptyRow');
+
+        form.addEventListener('submit', e => {
+            
+            e.preventDefault(); // Mencegah reload halaman
+            
+            // Validasi bawaan HTML5 (required) sudah berjalan sebelum blok ini dieksekusi
+            
+            // Ubah tampilan tombol jadi loading
+            btnSubmit.disabled = true;
+            btnSubmit.classList.add('opacity-75', 'cursor-not-allowed');
+            spinner.classList.remove('hidden');
+            statusMessage.className = 'hidden p-4 rounded-md text-sm font-medium'; // Reset status
+
+            // Ambil data form
+            const formData = new FormData(form);
+
+            // Simpan waktu input untuk ditampilkan di tabel lokal
+            const currentTime = new Date().toLocaleTimeString('id-ID') + ' - ' + new Date().toLocaleDateString('id-ID');
+            
+            // Mengirim data ke Google Sheets melalui fetch
+            fetch(scriptURL, { method: 'POST', body: formData })
+                .then(response => {
+                    // Jika berhasil
+                    
+                    // 1. Tampilkan notifikasi sukses
+                    statusMessage.textContent = 'Data berhasil disimpan ke sistem dan Google Sheets!';
+                    statusMessage.className = 'block p-4 rounded-md text-sm font-medium bg-green-100 text-green-700 mb-4 border border-green-200';
+                    
+                    // 2. Tambahkan data ke tabel di bawah form
+                    if(emptyRow) emptyRow.remove(); // Hapus tulisan "Belum ada data"
+                    
+                    const newRow = document.createElement('tr');
+                    newRow.className = 'hover:bg-gray-50 transition';
+                    newRow.innerHTML = `
+                        <td class="px-4 py-3">${currentTime}</td>
+                        <td class="px-4 py-3 font-medium text-gray-900">${formData.get('nama')}</td>
+                        <td class="px-4 py-3">${formData.get('identitas')}</td>
+                        <td class="px-4 py-3">${formData.get('jenis')}</td>
+                        <td class="px-4 py-3">${formData.get('tujuan')}</td>
+                    `;
+                    // Sisipkan di baris paling atas tabel
+                    tableBody.insertBefore(newRow, tableBody.firstChild);
+
+                    // 3. Kosongkan form kembali
+                    form.reset();
+                })
+                .catch(error => {
+                    // Jika gagal
+                    statusMessage.textContent = 'Terjadi kesalahan! Pastikan URL Google Script sudah benar dan Anda memiliki koneksi internet.';
+                    statusMessage.className = 'block p-4 rounded-md text-sm font-medium bg-red-100 text-red-700 mb-4 border border-red-200';
+                    console.error('Error!', error.message);
+                })
+                .finally(() => {
+                    // Kembalikan tombol ke keadaan semula
+                    btnSubmit.disabled = false;
+                    btnSubmit.classList.remove('opacity-75', 'cursor-not-allowed');
+                    spinner.classList.add('hidden');
+                    
+                    // Hilangkan notifikasi setelah 5 detik
+                    setTimeout(() => {
+                        statusMessage.classList.add('hidden');
+                    }, 5000);
+                });
+        });
+    </script>
+</body>
+</html>
