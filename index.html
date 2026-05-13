@@ -1,4 +1,3 @@
-<!DOCTYPE html>
 <html lang="id">
 <head>
     <meta charset="UTF-8">
@@ -29,58 +28,6 @@
                             <label class="block text-sm font-medium text-gray-700 mb-1">Nama Penitip *</label>
                             <input type="text" name="nama" required class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500 outline-none transition" placeholder="Contoh: Budi Santoso">
                         </div>
-                        <!-- Pilihan Jenis Identitas -->
-<div class="grid grid-cols-3 gap-2">
-    <div class="col-span-1">
-        <label class="block text-sm font-medium text-gray-700 mb-1">Jenis *</label>
-        <select name="jenis_identitas" required class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500 outline-none transition">
-            <option value="KTP">KTP</option>
-            <option value="SIM">SIM</option>
-            <option value="PASPOR">PASPOR</option>
-        </select>
-    </div>
-    <div class="col-span-2">
-        <label class="block text-sm font-medium text-gray-700 mb-1">No. Identitas *</label>
-        <input type="number" name="identitas" required class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500 outline-none transition" placeholder="Nomor Identitas">
-    </div>
-</div>
-
-<!-- Fitur Kamera & Upload Foto -->
-<div>
-    <label class="block text-sm font-medium text-gray-700 mb-1">Foto Identitas *</label>
-    <div class="flex flex-col gap-3">
-        <div class="flex gap-2">
-            <!-- Tombol Kamera -->
-            <button type="button" onclick="openCamera()" class="flex-1 bg-gray-200 hover:bg-gray-300 text-gray-700 py-2 px-3 rounded-md text-sm flex items-center justify-center gap-2 transition">
-                📷 Ambil Foto
-            </button>
-            <!-- Tombol Upload -->
-            <label class="flex-1 bg-gray-200 hover:bg-gray-300 text-gray-700 py-2 px-3 rounded-md text-sm flex items-center justify-center gap-2 cursor-pointer transition">
-                📁 Upload File
-                <input type="file" name="foto_file" id="foto_file" accept="image/*" class="hidden" onchange="previewImage(this)">
-            </label>
-        </div>
-        
-        <!-- Area Preview -->
-        <div id="previewContainer" class="hidden relative border-2 border-dashed border-gray-300 rounded-md p-2 bg-gray-50">
-            <img id="imagePreview" src="#" alt="Preview" class="max-h-48 mx-auto rounded-md">
-            <button type="button" onclick="resetPreview()" class="absolute top-1 right-1 bg-red-500 text-white rounded-full p-1 hover:bg-red-600">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
-                </svg>
-            </button>
-            <!-- Input hidden untuk menyimpan data base64 foto dari kamera -->
-            <input type="hidden" name="foto_base64" id="foto_base64">
-        </div>
-
-        <!-- Element Video untuk Kamera (Hidden by default) -->
-        <div id="cameraContainer" class="hidden flex flex-col gap-2">
-            <video id="video" class="w-full bg-black rounded-md" autoplay></video>
-            <button type="button" onclick="takeSnapshot()" class="bg-blue-600 text-white py-2 rounded-md">Klik untuk Foto</button>
-            <canvas id="canvas" class="hidden"></canvas>
-        </div>
-    </div>
-</div>
                         <div>
                             <label class="block text-sm font-medium text-gray-700 mb-1">No. Identitas (KTP/SIM) *</label>
                             <input type="number" name="identitas" required class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500 outline-none transition" placeholder="Masukkan 16 digit NIK">
